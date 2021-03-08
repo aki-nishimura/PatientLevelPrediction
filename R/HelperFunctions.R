@@ -385,6 +385,12 @@ listAppend <- function(a, b){
 #' @export
 configurePython <- function(envname='PLP', envtype=NULL){
   
+  if (envname == 'bayesbridge') {
+    stopifnot("Package 'bayesbridge' is currently only available from PyPI"
+              = (is.null(envtype) || envtype == 'python'))
+    envtype <- 'python'
+  }
+  
   if(is.null(envtype)){
     if(getOs()=='windows'){
       envtype=='conda'
@@ -413,7 +419,11 @@ configurePython <- function(envname='PLP', envtype=NULL){
       ParallelLogger::logInfo(paste0('Creating virtual python environment called ', envname))
       location <- reticulate::virtualenv_create(envname=envname, packages = "python")
     }
-    packages <- c('numpy', 'scikit-learn','scipy', 'pandas','pydotplus','keras')
+    if (envname == 'bayesbridge') {
+      packages <- c('bayesbridge')
+    } else {
+      packages <- c('numpy', 'scikit-learn','scipy', 'pandas','pydotplus','keras')
+    }
     ParallelLogger::logInfo(paste0('Adding python dependancies to ', envname))
     reticulate::virtualenv_install(envname=envname, packages = packages, 
                                    ignore_installed = TRUE)
