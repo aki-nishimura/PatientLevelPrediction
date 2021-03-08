@@ -417,7 +417,7 @@ configurePython <- function(envname='PLP', envtype=NULL){
       warning(paste0('Python environment ', envname,' exists.  You can use removePython() to remove if you want to fresh config'))
     } else {
       ParallelLogger::logInfo(paste0('Creating virtual python environment called ', envname))
-      location <- reticulate::virtualenv_create(envname=envname, packages = "python")
+      location <- reticulate::virtualenv_create(envname=envname)
     }
     if (envname == 'bayesbridge') {
       packages <- c('bayesbridge')
